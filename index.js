@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 app.use(express.json());
-const PORT = process.env.PORT || 5000;
 
 // Allowed origins for CORS - update with your frontend deployed URL
 const allowedOrigins = [
@@ -44,6 +43,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Remove app.listen() for Vercel serverless function compatibility
+
+module.exports = app;
