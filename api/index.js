@@ -7,10 +7,10 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Allowed origins for CORS - update with your frontend deployed URL
+// Allowed origins for CORS - update with your frontend deployed URLs
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://vercel-frontend-test-git-main-bhumiks-projects.vercel.app'
+  'https://vercel-frontend-test-ruddy.vercel.app'
 ];
 
 const corsOptionsDelegate = (req, callback) => {
