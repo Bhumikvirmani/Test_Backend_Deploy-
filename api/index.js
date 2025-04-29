@@ -9,7 +9,9 @@ const app = express();
 // Allowed origins for CORS - update with your frontend deployed URLs
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://vercel-frontend-test-ruddy.vercel.app'
+  'http://localhost:5173', // Vite dev server
+  'https://vercel-frontend-test-ruddy.vercel.app',
+  process.env.FRONTEND_URL || '' // Will be set in Vercel environment variables
 ];
 
 const corsOptionsDelegate = (req, callback) => {
