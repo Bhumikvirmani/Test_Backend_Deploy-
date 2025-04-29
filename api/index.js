@@ -5,7 +5,6 @@ const serverless = require('serverless-http');
 
 dotenv.config();
 const app = express();
-app.use(express.json());
 
 // Allowed origins for CORS - update with your frontend deployed URLs
 const allowedOrigins = [
@@ -28,18 +27,10 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions);
 };
 
-// Apply CORS middleware globally
+// Apply CORS middleware globally as the first middleware
 app.use(cors(corsOptionsDelegate));
 
-// Explicitly handle OPTIONS preflight requests
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(204);
-});
-
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/', (req, res) => {
