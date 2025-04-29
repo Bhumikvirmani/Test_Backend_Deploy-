@@ -28,11 +28,19 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions);
 };
 
+// Apply CORS middleware globally
 app.use(cors(corsOptionsDelegate));
-app.use(express.urlencoded({ extended: true }));
 
-// Handle preflight OPTIONS requests
-app.options('*', cors(corsOptionsDelegate));
+// Explicitly handle OPTIONS preflight requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(204);
+});
+
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/', (req, res) => {
   const { name, email, message } = req.body;
