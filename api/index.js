@@ -45,5 +45,13 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Export the app wrapped with serverless-http for Vercel compatibility
-module.exports.handler = serverless(app);
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export the serverless handler for Vercel
+module.exports = serverless(app);
