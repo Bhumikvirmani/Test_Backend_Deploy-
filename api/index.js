@@ -3,46 +3,59 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const serverless = require('serverless-http');
 
+// Load environment variables
 dotenv.config();
+
+// Initialize Express app
 const app = express();
 
-// Allowed origins for CORS - update with your frontend deployed URLs
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173', // Vite dev server
-  'https://vercel-frontend-test-ruddy.vercel.app',
-  process.env.FRONTEND_URL || '' // Will be set in Vercel environment variables
-];
-
-const corsOptionsDelegate = (req, callback) => {
-  let corsOptions;
-  if (allowedOrigins.indexOf(req.headers.origin) !== -1) {
-    corsOptions = {
-      origin: req.headers.origin,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization']
-    };
-  } else {
-    corsOptions = { origin: false }; // Disable CORS for this request
-  }
-  callback(null, corsOptions);
+// Simplified CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173', // Vite dev server
+    'https://vercel-frontend-test-ruddy.vercel.app',
+    'https://testproject-frontend.vercel.app',
+    'https://frontend-npob8lq5l-bhumiks-projects.vercel.app',
+    process.env.FRONTEND_URL || ''
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 // Apply CORS middleware globally as the first middleware
-app.use(cors(corsOptionsDelegate));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/', (req, res) => {
-  const { name, email, message } = req.body;
-  console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
-  res.status(200).json({ message: 'Data received successfully' });
+// Simple health check route
+app.get('/', (_, res) => {
+  res.status(200).send('API is running');
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+// Data submission endpoint
+app.post('/', (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    // In production, avoid console.log as it can slow down serverless functions
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Data received successfully'
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Error processing request',
+      error: process.env.NODE_ENV !== 'production' ? error.message : undefined
+    });
+  }
 });
 
 // For local development
