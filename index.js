@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require('cors');
 const dotenv = require('dotenv');
+const serverless = require('serverless-http');
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,5 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Remove app.listen() for Vercel serverless function compatibility
-
-module.exports = app;
+// Export the app wrapped with serverless-http for Vercel compatibility
+module.exports.handler = serverless(app);
