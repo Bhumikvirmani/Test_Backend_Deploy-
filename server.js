@@ -8,9 +8,9 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
-// CORS configuration
+// CORS configuration for local development
 const corsOptions = {
-  origin: ['http://localhost:5173'], // Vite dev server default port
+  origin: 'http://localhost:5173', // Vite dev server default port
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -35,13 +35,17 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   try {
     const { name, email, message } = req.body;
-    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
-    
+    console.log(`Received form submission:`);
+    console.log(`- Name: ${name}`);
+    console.log(`- Email: ${email}`);
+    console.log(`- Message: ${message}`);
+
     res.status(200).json({
       success: true,
       message: 'Data received successfully'
     });
   } catch (error) {
+    console.error('Error processing request:', error);
     res.status(400).json({
       success: false,
       message: 'Error processing request',
@@ -54,4 +58,7 @@ app.post('/', (req, res) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`API endpoints:`);
+  console.log(`- GET /: Health check`);
+  console.log(`- POST /: Form submission`);
 });
