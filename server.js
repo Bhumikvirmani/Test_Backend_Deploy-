@@ -13,7 +13,7 @@ const app = express();
 // CORS configuration
 const allowedOrigins = [
   'http://localhost:5173',                    // Local development
-  'https://vocal-boba-2ccc7e.netlify.app',    // Netlify deployment
+  'https://frontendtesting.netlify.app',    // Netlify deployment
   'https://test-backend-deploy-rpsq.onrender.com'  // Backend URL
 ];
 
