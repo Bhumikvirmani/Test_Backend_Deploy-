@@ -14,7 +14,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',                    // Local development
   'https://vocal-boba-2ccc7e.netlify.app',    // Netlify deployment
-  'https://test-backend-deploy-homh.onrender.com'  // Backend URL
+  'https://test-backend-deploy-rpsq.onrender.com'  // Backend URL
 ];
 
 // Add FRONTEND_URL from environment variables if it exists and is not already in the list
