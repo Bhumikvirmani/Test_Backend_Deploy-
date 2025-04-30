@@ -10,9 +10,7 @@ const app = express();
 
 // CORS configuration for local development
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://vocal-boba-2ccc7e.netlify.app']
-    : ['http://localhost:5173'],
+  origin: process.env.FRONTEND_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
